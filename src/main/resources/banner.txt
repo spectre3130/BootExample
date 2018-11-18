@@ -1,0 +1,7 @@
+${AnsiColor.GREEN}   .  ${AnsiColor.WHITE} ____          _            __ _ _            ${AnsiColor.BLUE}                     __
+${AnsiColor.GREEN}  /\\ ${AnsiColor.WHITE}/ ___'_ __ _ _(_)_ __  __ _ \ \ \ \         ${AnsiColor.BLUE}_________  ___ _____/ /_________
+${AnsiColor.GREEN} ( ( )${AnsiColor.WHITE}\___ | '_ | '_| | '_ \/ _` | \ \ \ \        ${AnsiColor.BLUE}/ ___/ __ \/ _ \/ ___/ __/ ___/ _ \
+${AnsiColor.GREEN}  \\/ ${AnsiColor.WHITE} ___)| |_)| | | | | || (_| |  ) ) ) )      ${AnsiColor.BLUE}(__  ) /_/ /  __/ /__/ /_/ /  /  __/
+${AnsiColor.GREEN}   '  ${AnsiColor.WHITE}|____| .__|_| |_|_| |_\__, | / / / /     ${AnsiColor.BLUE}/____/ .___/\___/\___/\__/_/  \___/
+${AnsiColor.WHITE}  =========|_|==============|___/=/_/_/_/           ${AnsiColor.BLUE}/_/
+${AnsiColor.WHITE}::${AnsiColor.GREEN} Spring Boot ${AnsiColor.WHITE}::        ${AnsiColor.RED} (${spring-boot.version})

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Spring Boot Journal</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <script>
+        $(function(){
+            $('#btn_api').on('click', () => {
+                $.ajax({
+                    type: 'GET',
+                    url: '/api/journals',
+                    contentType: 'application/json',
+                    dataType: 'json',
+                    success: function(res) {
+                        console.log(res);
+                    }
+                });
+            });
+
+            $('#btn_hal').on('click', () => {
+               window.location.href = '/api/browser';
+            });
+
+            $('#btn_h2').on('click', () => {
+                window.location.href = '/h2-console';
+            });
+        })
+    </script>
+</head>
+    <body>
+        <div class="container">
+            <h4>스프링 부트 테스트</h4>
+            <button id="btn_api" class="btn btn-primary">API 결과 받기</button>
+            <button id="btn_hal" class="btn btn-warning">HAL 브라우저 이동</button>
+            <button id="btn_h2" class="btn btn-danger">H2콘솔 이동</button>
+        </div>
+    </body>
+</html>
