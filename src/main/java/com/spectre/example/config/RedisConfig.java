@@ -18,24 +18,24 @@ public class RedisConfig {
     @Value("${topic}")
     private String topic;
 
-    @Bean
-    public RedisMessageListenerContainer container(
-            RedisConnectionFactory connectionFactory, MessageListenerAdapter listenerAdapter) {
-        RedisMessageListenerContainer container = new RedisMessageListenerContainer();
-        container.setConnectionFactory(connectionFactory);
-        container.addMessageListener(listenerAdapter, new PatternTopic(topic));
-        return container;
-    }
+//    @Bean
+//    public RedisMessageListenerContainer container(
+//            RedisConnectionFactory connectionFactory, MessageListenerAdapter listenerAdapter) {
+//        RedisMessageListenerContainer container = new RedisMessageListenerContainer();
+//        container.setConnectionFactory(connectionFactory);
+//        container.addMessageListener(listenerAdapter, new PatternTopic(topic));
+//        return container;
+//    }
 
     @Bean
     public MessageListenerAdapter listenerAdapter(RedisConsumer redisConsumer) {
         return new MessageListenerAdapter(redisConsumer, "messageHandler");
     }
 
-    @Bean
-    CommandLineRunner sendMessage(RedisProducer redisProducer) {
-        return args -> {
-            redisProducer.sendTo(topic, "레디스 시작");
-        };
-    }
+//    @Bean
+//    CommandLineRunner sendMessage(RedisProducer redisProducer) {
+//        return args -> {
+//            redisProducer.sendTo(topic, "레디스 시작");
+//        };
+//    }
 }

@@ -9,34 +9,98 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
     <script>
         $(function(){
-            $('#btn_api').on('click', () => {
-                $.ajax({
-                    type: 'GET',
-                    url: '/api/journals',
-                    contentType: 'application/json',
-                    dataType: 'json',
-                    success: function(res) {
-                        console.log(res);
-                    }
-                });
-            });
+            let init = {
+                loginPage: function() {
+                    let loginPage = new LoginPage();
+                    $('.container').html(loginPage.render());
+                    loginPage.bind();
+                },
+                mainPage: function() {
+                    let mainPage = new MainPage();
+                    $('.container').html(mainPage.render());
+                    mainPage.bind();
+                }
+            }
 
-            $('#btn_hal').on('click', () => {
-               window.location.href = '/api/browser';
-            });
+            function LoginPage() {
+                this.bind = function() {
+                    $('#btn_login').on('click', function(ev) {
+                        let username = $('#username').val();
+                        let password = $('#password').val();
+                        console.log(username);
+                        console.log(password);
 
-            $('#btn_h2').on('click', () => {
-                window.location.href = '/h2-console';
-            });
+                        if(username === "admin" && password === "1234") {
+                            init.mainPage();
+                        } else {
+                            $('#error_msg').html(`<span style="font-weight: bold; color: red;">아이디 또는 비밀번호가 틀립니다.</span>`)
+                        }
+                    });
+                };
+
+                this.render = function() {
+                    $('.container').empty();
+                    return `
+                        <div class="row justify-content-center">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">아이디</label>
+                                    <input id="username" type="text" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1">비밀번호</label>
+                                    <input id="password" type="password" class="form-control">
+                                </div>
+                                <div id="error_msg" class="mt-2"></div>
+                                <button id="btn_login" type="button" class="btn btn-primary">로그인</button>
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+            function MainPage() {
+                this.bind = function() {
+                    $('#btn_api').on('click', () => {
+                        $.ajax({
+                            type: 'GET',
+                            url: '/api/journals',
+                            contentType: 'application/json',
+                            dataType: 'json',
+                            success: function(res) {
+                                console.log(res);
+                            }
+                        });
+                    });
+
+                    $('#btn_hal').on('click', () => {
+                        window.location.href = '/api/browser';
+                    });
+
+                    $('#btn_h2').on('click', () => {
+                        window.location.href = '/h2-console';
+                    });
+
+                    $('#btn_logout').on('click', () => {
+                        init.loginPage();
+                    });
+                };
+
+                this.render = function() {
+                    return `
+                        <h4>스프링 부트 테스트</h4>
+                        <button id="btn_api" class="btn btn-primary">API 결과 받기</button>
+                        <button id="btn_hal" class="btn btn-warning">HAL 브라우저 이동</button>
+                        <button id="btn_h2" class="btn btn-success">H2콘솔 이동</button>
+                        <button id="btn_logout" class="btn btn-danger">로그아웃</button>`;
+                };
+            }
+
+            init.loginPage();
         })
     </script>
 </head>
     <body>
-        <div class="container">
-            <h4>스프링 부트 테스트</h4>
-            <button id="btn_api" class="btn btn-primary">API 결과 받기</button>
-            <button id="btn_hal" class="btn btn-warning">HAL 브라우저 이동</button>
-            <button id="btn_h2" class="btn btn-danger">H2콘솔 이동</button>
+        <div id="app" class="container">
         </div>
     </body>
 </html>
