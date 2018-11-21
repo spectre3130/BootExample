@@ -7,34 +7,48 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
     <script>
         $(function(){
             let init = {
                 loginPage: function() {
                     let loginPage = new LoginPage();
                     $('.container').html(loginPage.render());
-                    loginPage.bind();
+                    loginPage.eventBinder();
                 },
                 mainPage: function() {
                     let mainPage = new MainPage();
                     $('.container').html(mainPage.render());
-                    mainPage.bind();
+                    mainPage.eventBinder();
                 }
             }
 
             function LoginPage() {
-                this.bind = function() {
+                this.eventBinder = function() {
                     $('#btn_login').on('click', function(ev) {
-                        let username = $('#username').val();
-                        let password = $('#password').val();
-                        console.log(username);
-                        console.log(password);
+                        let formData = {
+                            username: $('#username').val(),
+                            password: $('#password').val(),
+                            grant_type: 'password'
+                        };
 
-                        if(username === "admin" && password === "1234") {
-                            init.mainPage();
-                        } else {
-                            $('#error_msg').html(`<span style="font-weight: bold; color: red;">아이디 또는 비밀번호가 틀립니다.</span>`)
-                        }
+                        $.ajax({
+                            type: 'POST',
+                            url: '/oauth/token',
+                            context: this,
+                            headers: {
+                                Authorization: `Basic ${btoa("test:1234")}`,
+                            },
+                            data: formData,
+                            contentType: 'application/x-www-form-urlencoded',
+                            dataType: 'json',
+                            success: function(token) {
+                                init.mainPage();
+                            },
+                            error: function(res, status, error) {
+                                $('#error_msg').html(`<span style="font-weight: bold; color: red;">아이디 또는 비밀번호가 틀립니다.</span>`)
+                            }
+                        });
                     });
                 };
 
@@ -58,8 +72,10 @@
                     `;
                 }
             }
+
+
             function MainPage() {
-                this.bind = function() {
+                this.eventBinder = function() {
                     $('#btn_api').on('click', () => {
                         $.ajax({
                             type: 'GET',

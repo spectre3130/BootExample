@@ -34,8 +34,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients
                 .inMemory()
-                .withClient("spectre-client")
-                .secret(passwordEncoder.encode("spectre-password"))
+                .withClient("test")
+                .secret(passwordEncoder.encode("1234"))
                 //TODO authorizedGrantTypes 에 대해 알아보기
                 .authorizedGrantTypes("password", "authorization_code", "refresh_token", "implicit")
                 .scopes("read", "write", "trust")

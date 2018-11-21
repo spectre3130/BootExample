@@ -1,0 +1,27 @@
+spring:
+  security:
+    oauth2:
+      client:
+        clientId: test
+        clientSecret: 1234
+        accessTokenUri: http://localhost:8080/oauth/token
+        userAuthorizationUri: http://localhost:8080/oauth/authorize
+      resource:
+        userInfoUri: http://localhost:8080/api/**
+    #account:
+      #name: spectre
+      #password: 1234
+  h2:
+    console:
+      enabled: true
+  jpa:
+    show-sql: true
+  data:
+    rest:
+      base-path: /api #HATEOAS
+
+#rabbit-mq
+myqueue: spring-boot
+
+#redis
+topic: spring-boot
