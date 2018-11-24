@@ -9,9 +9,9 @@ import org.springframework.stereotype.Component;
 public class RabbitMQConsumer {
 
     private final static Logger logger = LoggerFactory.getLogger(RabbitMQConsumer.class);
-
-    @RabbitListener(queues = "${myqueue}")
-    public void handler(String message) {
-        logger.info("소비기 > " + message);
-    }
+//
+//    @RabbitListener(queues = "${myqueue}")
+//    public void handler(String message) {
+//        logger.info("소비기 > " + message);
+//    }
 }

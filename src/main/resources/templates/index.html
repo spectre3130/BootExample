@@ -1,122 +1,147 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://thymeleaf.org">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>Spring Boot Journal</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
-    <script>
-        $(function(){
-            let init = {
-                loginPage: function() {
-                    let loginPage = new LoginPage();
-                    $('.container').html(loginPage.render());
-                    loginPage.eventBinder();
-                },
-                mainPage: function() {
-                    let mainPage = new MainPage();
-                    $('.container').html(mainPage.render());
-                    mainPage.eventBinder();
-                }
-            }
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Spring Boot Journal</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+  <script>
+      $(function () {
+          let init = {
+              loginPage: function () {
+                  let loginPage = new LoginPage();
+                  $('.container').html(loginPage.render());
+                  loginPage.eventBinder();
+              },
+              mainPage: function (token) {
+                  let mainPage = new MainPage(token);
+                  $('.container').html(mainPage.render());
+                  mainPage.eventBinder();
+              }
+          }
 
-            function LoginPage() {
-                this.eventBinder = function() {
-                    $('#btn_login').on('click', function(ev) {
-                        let formData = {
-                            username: $('#username').val(),
-                            password: $('#password').val(),
-                            grant_type: 'password'
-                        };
+          function LoginPage() {
+              this.eventBinder = function () {
+                  $('#btn_login').on('click', function (ev) {
+                      let formData = {
+                          username: $('#username').val(),
+                          password: $('#password').val(),
+                          grant_type: 'password'
+                      };
 
-                        $.ajax({
-                            type: 'POST',
-                            url: '/oauth/token',
-                            context: this,
-                            headers: {
-                                Authorization: `Basic ${btoa("test:1234")}`,
-                            },
-                            data: formData,
-                            contentType: 'application/x-www-form-urlencoded',
-                            dataType: 'json',
-                            success: function(token) {
-                                init.mainPage();
-                            },
-                            error: function(res, status, error) {
-                                $('#error_msg').html(`<span style="font-weight: bold; color: red;">아이디 또는 비밀번호가 틀립니다.</span>`)
-                            }
-                        });
-                    });
-                };
+                      $.ajax({
+                          type: 'POST',
+                          url: '/oauth/token',
+                          context: this,
+                          headers: {
+                              Authorization: `Basic ${btoa("test:1234")}`,
+                          },
+                          data: formData,
+                          contentType: 'application/x-www-form-urlencoded',
+                          dataType: 'json',
+                          success: function (token) {
+                              console.log(token);
+                              init.mainPage(token);
+                          },
+                          error: function (res, status, error) {
+                              $('#error_msg').html(`<span style="font-weight: bold; color: red;">아이디 또는 비밀번호가 틀립니다.</span>`)
+                          }
+                      });
+                  });
+              };
 
-                this.render = function() {
-                    $('.container').empty();
-                    return `
-                        <div class="row justify-content-center">
-                            <div class="col-6">
-                                <div class="form-group">
-                                    <label for="exampleInputEmail1">아이디</label>
-                                    <input id="username" type="text" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label for="exampleInputPassword1">비밀번호</label>
-                                    <input id="password" type="password" class="form-control">
-                                </div>
-                                <div id="error_msg" class="mt-2"></div>
-                                <button id="btn_login" type="button" class="btn btn-primary">로그인</button>
-                            </div>
+              this.render = function () {
+                  $('.container').empty();
+                  return `
+                <div class="row justify-content-center">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">아이디</label>
+                            <input id="username" type="text" class="form-control">
                         </div>
-                    `;
-                }
-            }
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">비밀번호</label>
+                            <input id="password" type="password" class="form-control">
+                        </div>
+                        <div id="error_msg" class="mt-2"></div>
+                        <button id="btn_login" type="button" class="btn btn-primary">로그인</button>
+                    </div>
+                </div>
+            `;
+              }
+          }
 
 
-            function MainPage() {
-                this.eventBinder = function() {
-                    $('#btn_api').on('click', () => {
-                        $.ajax({
-                            type: 'GET',
-                            url: '/api/journals',
-                            contentType: 'application/json',
-                            dataType: 'json',
-                            success: function(res) {
-                                console.log(res);
-                            }
-                        });
-                    });
+          function MainPage(token) {
+              this.token = token;
 
-                    $('#btn_hal').on('click', () => {
-                        window.location.href = '/api/browser';
-                    });
+              this.eventBinder = function () {
+                  $('#btn_api').on('click', () => {
+                      $.ajax({
+                          type: 'GET',
+                          url: '/api/journals',
+                          headers: {
+                              Authorization: `bearer ${this.token.access_token}`,
+                          },
+                          contentType: 'application/json',
+                          dataType: 'json',
+                          success: function (res) {
+                              let processTempl = res._embedded.journals.map(el => {
+                                  return `
+                                    <li>
+                                      <div style="margin: 5px;">${el.title}</div>
+                                      <div style="margin: 5px;">${el.summary}</div>
+                                      <div style="margin: 5px;">${new Date(el.created)}</div>
+                                    </li>`;
+                              }).join('\n');
+                              console.log(processTempl);
+                              $('#journal_list').html(processTempl);
+                          }
+                      });
+                  });
 
-                    $('#btn_h2').on('click', () => {
-                        window.location.href = '/h2-console';
-                    });
+                  $('#btn_hal').on('click', () => {
+                      window.location.href = '/api/browser';
+                  });
 
-                    $('#btn_logout').on('click', () => {
-                        init.loginPage();
-                    });
-                };
+                  $('#btn_h2').on('click', () => {
+                      window.location.href = '/h2-console';
+                  });
 
-                this.render = function() {
-                    return `
-                        <h4>스프링 부트 테스트</h4>
-                        <button id="btn_api" class="btn btn-primary">API 결과 받기</button>
-                        <button id="btn_hal" class="btn btn-warning">HAL 브라우저 이동</button>
-                        <button id="btn_h2" class="btn btn-success">H2콘솔 이동</button>
-                        <button id="btn_logout" class="btn btn-danger">로그아웃</button>`;
-                };
-            }
+                  $('#btn_logout').on('click', () => {
+                      init.loginPage();
+                  });
+              };
 
-            init.loginPage();
-        })
-    </script>
+              this.render = function () {
+                  return `
+            <h4>스프링 부트 테스트</h4>
+            <nav>
+              <button id="btn_api" class="btn btn-primary">API 결과 받기</button>
+              <button id="btn_hal" class="btn btn-warning">HAL 브라우저 이동</button>
+              <button id="btn_h2" class="btn btn-success">H2콘솔 이동</button>
+              <button id="btn_logout" class="btn btn-danger">로그아웃</button>
+            </nav>
+            <section style="margin-top:30px">
+              <ul id="journal_list">
+              </ul>
+            </section>`;
+              };
+
+              this.service = function () {
+
+              }
+          }
+
+          init.loginPage();
+      })
+  </script>
 </head>
-    <body>
-        <div id="app" class="container">
-        </div>
-    </body>
+<body>
+<div id="app" class="container">
+</div>
+</body>
 </html>

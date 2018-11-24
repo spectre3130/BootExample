@@ -13,19 +13,19 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableRabbit
 public class RabbitMQConfig {
 
-    @Value("${myqueue}")
-    private String queue;
-
-    private final RabbitMQProducer rabbitMQProducer;
-
-    public RabbitMQConfig(RabbitMQProducer rabbitMQProducer) {
-        this.rabbitMQProducer = rabbitMQProducer;
-    }
-
-    @Bean
-    Queue queue() {
-        return new Queue(queue, false);
-    }
+//    @Value("${myqueue}")
+//    private String queue;
+//
+//    private final RabbitMQProducer rabbitMQProducer;
+//
+//    public RabbitMQConfig(RabbitMQProducer rabbitMQProducer) {
+//        this.rabbitMQProducer = rabbitMQProducer;
+//    }
+//
+//    @Bean
+//    Queue queue() {
+//        return new Queue(queue, false);
+//    }
 
 //    @Scheduled(fixedDelay = 3000L)
 //    public void sendMessage() {

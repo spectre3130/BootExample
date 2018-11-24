@@ -27,10 +27,10 @@ public class RedisConfig {
 //        return container;
 //    }
 
-    @Bean
-    public MessageListenerAdapter listenerAdapter(RedisConsumer redisConsumer) {
-        return new MessageListenerAdapter(redisConsumer, "messageHandler");
-    }
+//    @Bean
+//    public MessageListenerAdapter listenerAdapter(RedisConsumer redisConsumer) {
+//        return new MessageListenerAdapter(redisConsumer, "messageHandler");
+//    }
 
 //    @Bean
 //    CommandLineRunner sendMessage(RedisProducer redisProducer) {
